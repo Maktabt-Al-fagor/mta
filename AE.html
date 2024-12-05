@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8fac8;
+            font-family: Arial, sans-serif;
+        }
+
+        .ryte {
+            position: fixed;
+            background-color: #fcfce2;
+            width: 15%;
+            height: 100%;
+            right: 0;
+            top: 0;
+        }
+
+        .ap, .ae, .rq {
+            background-color: #9e9e9e;
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 90px;
+            right: 24%;
+        }
+        #ae{
+            position: absolute;
+            top: 20%;
+            right: 10%;
+        }
+        #ap{
+            position: absolute;
+            top: 24%;
+            right: 10%;
+        }
+        #rq{
+            position: absolute;
+            top: 22%;
+            right: 10%;
+        }
+
+        .ap {
+            top: 20%;
+        }
+
+        .ae {
+            top: 40%;
+        }
+
+        .rq {
+            top: 60%;
+        }
+        #zaed{
+            position: absolute;
+            height: 70%;
+            top: 15%;
+            right: 35%;
+        }
+        #zaed1{
+            position: fixed;
+            position: absolute;
+            left: 8%;
+            top: 10%;
+            height: 80%;
+        }
+
+        .black {
+            background-color: #000000;
+            position: fixed;
+            width: 2%;
+            height: 100%;
+            right: 15%;
+            top: 0;
+        }
+
+        .mntag, .mntag1, .mntag2 {
+            background-color: #768580;
+            position: absolute;
+            width: 77%;
+            height: 23%;
+            right: 20%;
+        }
+
+        .mntag {
+            top: 10%;
+        }
+
+        .mntag1 {
+            top: 40%;
+        }
+
+        .mntag2 {
+            top: 70%;
+        }
+
+        .img1 {
+            position: absolute;
+            width: 15%;
+            height: 90%;
+            background-color: #fff;
+            top: 5%;
+            right: 1%;
+        }
+
+        .srs {
+            background-color: #777777;
+            position: absolute;
+            width: 100%;
+            height: 25%;
+            bottom: 0;
+        }
+
+        .redent {
+            background-color: #9e9e9e;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 40%;
+        }
+
+        .product-container {
+            background-color: #768580;
+            width: 79%;
+            right: 7.11%;
+            top: 10%;
+            height: 140px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .product-inner {
+            background-color: #ffffff;
+            margin-right: 10px;
+            width: 14%;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .add-product-btn, .delete-all-btn {
+            border: none;
+            cursor: pointer;
+            background-color: #ffffff;
+            position: absolute;
+            width: 30%;
+            height: 8%;
+            bottom: 0;
+            right: 40%;
+        }
+
+        .delete-all-btn {
+            background-color: #250205;
+            position: fixed;
+            color: white;
+            position: absolute;
+            bottom: 0;
+            right: 70%;
+            width: 1.5%;
+            height: 8%;
+            padding: 5px;
+        }
+
+        .delete-product-btn {
+            background-color: #e63946;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #productList {
+            position: relative;
+            top: 30px;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 80vh;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .rbh, .kh_sara {
+            position: absolute;
+            width: 50%;
+            height: 26%;
+            left: 20%;
+        }
+
+        .rbh {
+            background-color: #849487;
+            top: 20%;
+        }
+
+        .kh_sara {
+            background-color: #c7b7b7;
+            top: 50%;
+        }
+
+        .editable {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 0 10px;
+            font-size: 2em; /* زيادة حجم الخط */
+        }
+
+        .editable span {
+            font-size: 2em; /* زيادة حجم الخط للنص */
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .editable input {
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 2em; /* زيادة حجم الخط للأرقام */
+            text-align: center; /* توسيط النص */
+            width: 60%;
+        }
+
+        .editable i {
+            cursor: pointer;
+            color: #fff;
+            font-size: 2em; /* زيادة حجم الخط لرمز التعديل */
+            margin-left: 10px;
+        }
+        
+        .editable.disabled i {
+            color: #d3d3d3;
+        }
+    </style>
+    <style>
+        .container {
+          --uib-size: 37px;
+          --uib-color: black;
+          --uib-speed: .9s;
+          --uib-bg-opacity: .1;
+          height: var(--uib-size);
+          width: var(--uib-size);
+          transform-origin: center;
+          overflow: visible;
+        }
+    
+        .car {
+          fill: none;
+          stroke: var(--uib-color);
+          stroke-dasharray: 15, 85;
+          stroke-dashoffset: 0;
+          stroke-linecap: round;
+          animation: travel var(--uib-speed) linear infinite;
+          will-change: stroke-dasharray, stroke-dashoffset;
+          transition: stroke 0.5s ease;
+        }
+    
+        .track {
+          stroke: var(--uib-color);
+          opacity: var(--uib-bg-opacity);
+          transition: stroke 0.5s ease;
+        }
+    
+        @keyframes travel {
+          0% {
+            stroke-dashoffset: 0;
+          }
+    
+          100% {
+            stroke-dashoffset: -100;
+          }
+        }
+    
+        #svg-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(255, 255, 255, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+      </style>
+</head>
+<body>
+    <div id="svg-overlay" hidden>
+        <svg 
+          class="container" 
+          x="0px" 
+          y="0px" 
+          viewBox="0 0 37 37" 
+          height="37" 
+          width="37" 
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <path 
+            class="track" 
+            fill="none" 
+            stroke-width="5" 
+            pathLength="100" 
+            d="M0.37 18.5 C0.37 5.772 5.772 0.37 18.5 0.37 S36.63 5.772 36.63 18.5 S31.228 36.63 18.5 36.63 S0.37 31.228 0.37 18.5">
+          </path>
+          <path 
+            class="car" 
+            fill="none" 
+            stroke-width="5" 
+            pathLength="100" 
+            d="M0.37 18.5 C0.37 5.772 5.772 0.37 18.5 0.37 S36.63 5.772 36.63 18.5 S31.228 36.63 18.5 36.63 S0.37 31.228 0.37 18.5">
+          </path>
+        </svg>
+      </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const overlay = document.getElementById('svg-overlay');
+          overlay.hidden = false;
+    
+          // إخفاء الرسوم المتحركة بعد 3 ثوانٍ
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 1000);
+        });
+      </script>
+    <div class="ryte">
+        <a href="AP.html">
+            <div class="ap">
+                <img id="ap" src="C:\Users\hussa\OneDrive\الصور\ap.jpeg" width="70px" alt="">
+            </div>
+        </a>
+        <a href="AE.html">
+            <div class="ae">
+                <img id="ae" src="C:\Users\hussa\OneDrive\الصور\ae.jpeg" width="70px" alt="">
+            </div>
+        </a>
+        <a href="RQ.html">
+            <div class="rq">
+                <img id="rq" src="C:\Users\hussa\OneDrive\الصور\rq.jpeg" width="70px" alt="">
+            </div>
+        </a>
+    </div>
+    <div class="black"></div>
+
+    <div class="rbh">
+        <div class="editable" id="profitSection">
+            <span>الأرباح:</span>
+            <input type="text" id="profitInput" value="0" disabled>
+            <i class="fas fa-pencil-alt" onclick="toggleEdit('profitSection', 'profitInput', 'profitKey')"></i>
+        </div>
+    </div>
+    <div class="kh_sara">
+        <div class="editable" id="expensesSection">
+            <span>المصاريف:</span>
+            <input type="text" id="expensesInput" value="0" disabled>
+            <i class="fas fa-pencil-alt" onclick="toggleEdit('expensesSection', 'expensesInput', 'expensesKey')"></i>
+        </div>
+    </div>
+
+
+
+    <div id="productList"></div>
+
+    <script>
+        const pageKey = 'pageSpecificData'; // Key for localStorage to differentiate pages
+    
+        // وظيفة لإضافة منتج جديد
+        function addProduct() {
+            const productList = document.getElementById('productList');
+            
+            const productContainer = document.createElement('div');
+            productContainer.classList.add('product-container');
+            
+            const productInner = document.createElement('div');
+            productInner.classList.add('product-inner');
+            
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-product-btn');
+            deleteButton.innerText = "حذف";
+            deleteButton.onclick = function() {
+                productList.removeChild(productContainer);
+                saveProducts();
+            };
+    
+            productContainer.appendChild(deleteButton);
+            productContainer.appendChild(productInner);
+            productList.appendChild(productContainer);
+            
+            saveProducts();
+        }
+    
+        function saveProducts() {
+            const productList = document.getElementById('productList').innerHTML;
+            localStorage.setItem(`${pageKey}_products`, productList);
+            
+            const profitInput = document.getElementById('profitInput').value;
+            const expensesInput = document.getElementById('expensesInput').value;
+            localStorage.setItem(`${pageKey}_profit`, profitInput);
+            localStorage.setItem(`${pageKey}_expenses`, expensesInput);
+            
+            savePrices(); // حفظ الأسعار أيضًا
+        }
+    
+        function loadProducts() {
+            const savedProducts = localStorage.getItem(`${pageKey}_products`);
+            if (savedProducts) {
+                document.getElementById('productList').innerHTML = savedProducts;
+                const deleteButtons = document.querySelectorAll('.delete-product-btn');
+                deleteButtons.forEach(button => {
+                    button.onclick = function() {
+                        const productContainer = button.parentElement;
+                        productContainer.remove();
+                        saveProducts();
+                    };
+                });
+            }
+    
+            const savedProfit = localStorage.getItem(`${pageKey}_profit`);
+            if (savedProfit) {
+                document.getElementById('profitInput').value = savedProfit;
+            }
+    
+            const savedExpenses = localStorage.getItem(`${pageKey}_expenses`);
+            if (savedExpenses) {
+                document.getElementById('expensesInput').value = savedExpenses;
+            }
+        }
+    
+        function deleteAllProducts() {
+            document.getElementById('productList').innerHTML = '';
+            saveProducts();
+        }
+    
+        function toggleEdit(sectionId, inputId, key) {
+            const section = document.getElementById(sectionId);
+            const input = document.getElementById(inputId);
+            const isDisabled = input.disabled;
+    
+            if (isDisabled) {
+                input.disabled = false;
+                section.classList.remove('disabled');
+                input.focus();
+            } else {
+                input.disabled = true;
+                section.classList.add('disabled');
+                saveProducts(); // حفظ القيمة بعد التعديل
+            }
+        }
+    
+        function savePrices() {
+            // استرجاع الأسعار من المنتجات الحالية
+            const productPrices = Array.from(document.querySelectorAll('.product-inner'))
+                .flatMap(inner => Array.from(inner.querySelectorAll('div')).map(div => parseFloat(div.textContent.split('-')[1].trim())))
+                .filter(price => !isNaN(price));
+            
+            localStorage.setItem('productPrices', JSON.stringify(productPrices));
+        }
+    
+        function calculateTotalPrices() {
+            // استرجاع الأسعار من LocalStorage
+            const savedPrices = localStorage.getItem('productPrices');
+            if (savedPrices) {
+                const prices = JSON.parse(savedPrices);
+                const total = prices.reduce((acc, price) => acc + price, 0);
+    
+                // وضع المجموع في قسم المصاريف والأرباح
+                document.getElementById('expensesInput').value = total;
+                document.getElementById('profitInput').value = total;
+                
+                // حفظ القيمة الجديدة في LocalStorage
+                localStorage.setItem('pageSpecificData_expenses', total);
+                localStorage.setItem('pageSpecificData_profit', total);
+            }
+        }
+    
+        window.onload = function() {
+            loadProducts(); // تحميل المنتجات المحفوظة
+            calculateTotalPrices(); // حساب مجموع الأسعار وعرضها
+        };
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>البداية</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8fac8;
+            flex-direction: column;
+        }
+        #img{
+            position: relative;
+            width: 50%;
+        }
+        .fade-image {
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+        }
+        .fade-image.visible {
+            opacity: 1;
+        }
+        .ALL {
+            position: relative;
+            top: -20%;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+            background-color: rgb(224, 74, 36);
+            animation-delay: 0.2s;
+            animation-duration: 50s;
+            border-radius: 10px;
+            width: 140%;
+            height: 40%;
+            text-align: center;
+            justify-content: space-around;
+            animation-name: allt;
+            animation-iteration-count: infinite;
+        }
+        @keyframes allt{
+            0%{
+                background-color: rgb(224, 74, 36);
+            }
+            15%{
+                background-color: rgb(216, 150, 134);
+            }
+            30%{
+                background-color: rgb(10, 132, 35);
+            }
+            45%{
+                background-color: rgb(54, 16, 98);
+            }
+            60%{
+                background-color: rgb(100, 15, 56);
+            }
+            80%{
+                background-color: rgb(99, 136, 7);
+            }
+            100%{
+                background-color: rgb(224, 74, 36);
+            }
+        }
+        .ALL.visible {
+            opacity: 1;
+        }
+        #error-message, #final-message {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+        #countdown {
+            color: red;
+            margin-top: 10px;
+        }
+        #request-sent {
+            color: blue;
+            margin-top: 10px;
+            display: none;
+        }
+        #email{
+            position: relative;
+            top: 5%;
+            width: 80%;
+            height: 40px;
+            border-radius: 7px;
+            border: 1px solid#000;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        #password{
+            position: relative;
+            top: 8%;
+            width: 80%;
+            height: 40px;
+            border-radius: 7px;
+            border: 1px solid#000;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .no{
+            position: relative;
+            top: -60%;
+            width: 80%;
+            height: 20%;
+            border-radius: 7px;
+            background-color: rgb(224, 15, 15);
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
+        }
+        b{
+            position: relative;
+            top: 30%;
+        }
+        .fa-beat-fade{
+            position: relative;
+            top: 30%;
+            left: 20%;
+        }
+        #final-message , #final-message ,#request-sent{
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
+            font-size: 15px;
+        }
+        .remove-ban-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ffc107;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .remove-ban-btn:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+
+<img id="img" src="c:\Users\hussa\OneDrive\الصور\S.jpeg" class="fade-image" alt="البداية">
+<div class="ALL">
+    <div class="no"> <i class="fa fa-triangle-exclamation fa-beat-fade" style="color: #FFD43B;"></i> <b>لا يُسمح بدخول غير العاملين</b><br><br>  </div>
+    <form dir="ltr" id="login-form">
+        <input type="email" id="email" placeholder="email"><br><br>
+        <input type="password" id="password"  placeholder="password"><br><br>
+        <input type="submit" id="submit" value="دخول">
+        <input type="reset" id="reset" value="إعادة تعيين">
+    </form>
+    <div id="error-message">خطأ في البريد الإلكتروني أو كلمة المرور!</div>
+    <div id="countdown"></div>
+    <div id="final-message">تم إيقاف تسجيل الدخول نهائيًا. يرجى إرسال طلب إعادة التفعيل.</div>
+    <div id="request-sent">تم إرسال طلبك لإعادة التفعيل. يرجى الانتظار.</div>
+
+    <!-- زر إزالة الحظر -->
+    <button class="remove-ban-btn" id="remove-ban-btn" style="display: none;" onclick="removeBan()">إزالة الحظر</button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const image = document.querySelector('.fade-image');
+        const formDiv = document.querySelector('.ALL');
+        const loginForm = document.getElementById('login-form');
+        const errorMessage = document.getElementById('error-message');
+        const countdown = document.getElementById('countdown');
+        const finalMessage = document.getElementById('final-message');
+        const requestSent = document.getElementById('request-sent');
+        const removeBanBtn = document.getElementById('remove-ban-btn');
+
+        // عرض الصورة بشكل تدريجي
+        setTimeout(() => {
+            image.classList.add('visible');
+        }, 100);
+
+        setTimeout(() => {
+            image.classList.remove('visible');
+            setTimeout(() => {
+                formDiv.classList.add('visible');
+            }, 3000);
+        }, 5000);
+
+        // بيانات المستخدمين المسموح لهم بالدخول
+        const allowedUsers = [
+            { email: "HussaiN@FAGOR.com", password: "HSNfi4@49!h65wtyN" },
+            { email: "Abdel-aziZ@FAGOR.com", password: "ADLff4@35!h66wrgZ" },
+            { email: "AhmeD@FAGOR.com", password: "AMDfl@03!h66opD" }
+        ];
+
+        let attempts = 0; // عدد المحاولات
+        let additionalAttempts = 0; // عدد المحاولات الإضافية
+        let isFinalAttempt = false; // لتحديد ما إذا كانت المحاولة الأخيرة
+
+        // التحقق من حالة المستخدم من Local Storage
+        const userState = localStorage.getItem("userBlocked");
+        const blockedEmail = localStorage.getItem("blockedEmail");
+        const blockedPassword = localStorage.getItem("blockedPassword");
+
+        if (userState === "true") {
+            disableLoginForever(blockedEmail, blockedPassword);
+        }
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            const isValidUser = allowedUsers.some(user => user.email === email && user.password === password);
+
+            if (isValidUser) {
+                alert("تم تسجيل الدخول بنجاح!");
+                window.location.href = "AP.html";
+                return;
+            }
+
+            if (isFinalAttempt) {
+                disableLoginForever(email, password);
+                return;
+            }
+
+            if (attempts < 5) {
+                attempts++;
+                displayError(`خطأ! (${attempts}/5 محاولات)`);
+            } else if (additionalAttempts < 3) {
+                additionalAttempts++;
+                displayError(`خطأ! (${additionalAttempts}/3 محاولات إضافية)`);
+            }
+
+            if (attempts === 5 && additionalAttempts === 0) {
+                lockoutUser(30, () => additionalAttempts = 0);
+            } else if (additionalAttempts === 3) {
+                lockoutUser(60, () => {
+                    isFinalAttempt = true; // السماح بمحاولة أخيرة
+                    countdown.textContent = "هذه محاولتك الأخيرة!";
+                });
+            }
+        });
+
+        function lockoutUser(duration, callback) {
+            loginForm.querySelectorAll('input').forEach(input => input.disabled = true);
+            errorMessage.style.display = 'none';
+            countdown.style.display = 'block';
+            let secondsLeft = duration;
+            countdown.textContent = `الرجاء الانتظار ${secondsLeft} ثانية`;
+
+            const interval = setInterval(() => {
+                secondsLeft--;
+                countdown.textContent = `الرجاء الانتظار ${secondsLeft} ثانية`;
+                if (secondsLeft <= 0) {
+                    clearInterval(interval);
+                    countdown.style.display = 'none';
+                    callback();
+                    loginForm.querySelectorAll('input').forEach(input => input.disabled = false);
+                }
+            }, 1000);
+        }
+
+        function displayError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function disableLoginForever(email, password) {
+            errorMessage.style.display = 'none';
+            finalMessage.style.display = 'block';
+            localStorage.setItem("userBlocked", "true");
+            localStorage.setItem("blockedEmail", email);
+            localStorage.setItem("blockedPassword", password);
+            requestSent.style.display = 'block';
+            removeBanBtn.style.display = 'block';
+        }
+
+        // دالة لإزالة الحظر
+        function removeBan() {
+            localStorage.removeItem("userBlocked");
+            localStorage.removeItem("blockedEmail");
+            localStorage.removeItem("blockedPassword");
+            alert("تم إزالة الحظر! يمكنك الآن محاولة الدخول.");
+            window.location.reload();
+        }
+    });
+</script>
+
+</body>
+</html>

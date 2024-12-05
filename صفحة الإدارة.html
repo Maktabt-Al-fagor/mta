@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الإدارة</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            background-color: #f8fac8;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        .user-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .user-box h3 {
+            margin: 0 0 10px;
+        }
+        .user-box button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .approve-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .approve-btn:hover {
+            background-color: #218838;
+        }
+        .reject-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .reject-btn:hover {
+            background-color: #c82333;
+        }
+        .request-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .request-btn:hover {
+            background-color: #0056b3;
+        }
+        .reset-btn {
+            background-color: #ffc107;
+            color: black;
+        }
+        .reset-btn:hover {
+            background-color: #e0a800;
+        }
+        #message-box {
+            display: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        #message-box.success {
+            background-color: #28a745;
+            color: white;
+        }
+        #message-box.error {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="message-box"></div> <!-- مربع عرض الرسائل -->
+    <h1>إدارة طلبات المستخدمين</h1>
+
+    <div class="user-box">
+        <h3>البريد الإلكتروني: <span id="requested-email">غير متوفر</span></h3>
+        <h3>كلمة المرور: <span id="requested-password">غير متوفر</span></h3>
+        <button class="approve-btn" onclick="approveUser()">قبول</button>
+        <button class="reject-btn" onclick="rejectUser()">رفض</button>
+        <button class="request-btn" onclick="sendRequest()">إرسال طلب جديد</button>
+        <button class="reset-btn" onclick="resetData()">إعادة تعيين البيانات</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const messageBox = document.getElementById("message-box");
+        const requestedEmail = document.getElementById("requested-email");
+        const requestedPassword = document.getElementById("requested-password");
+
+        // جلب بيانات المستخدم المحظور من Local Storage
+        const blockedEmail = localStorage.getItem("blockedEmail");
+        const blockedPassword = localStorage.getItem("blockedPassword");
+
+        // عرض بيانات المستخدم المحظور
+        if (blockedEmail && blockedPassword) {
+            requestedEmail.textContent = blockedEmail;
+            requestedPassword.textContent = blockedPassword;
+        } else {
+            // إخفاء القسم إذا لم يكن هناك مستخدم محظور
+            document.querySelector(".user-box").style.display = "none";
+        }
+
+        // دالة إظهار الرسائل
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = ""; // إزالة جميع الفئات السابقة
+            messageBox.classList.add(type === "success" ? "success" : "error");
+            messageBox.style.display = "block";
+            setTimeout(() => {
+                messageBox.style.display = "none";
+            }, 5000); // إخفاء الرسالة بعد 5 ثوانٍ
+        }
+
+        // دالة قبول المستخدم
+        window.approveUser = function () {
+            if (blockedEmail && blockedPassword) {
+                // تسجيل حالة الموافقة في Local Storage
+                localStorage.setItem("userApproved", "true");
+
+                // إزالة حالة الحظر
+                localStorage.removeItem("userBlocked");
+                localStorage.removeItem("blockedEmail");
+                localStorage.removeItem("blockedPassword");
+
+                // إظهار رسالة النجاح
+                showMessage("تم قبول طلب المستخدم بنجاح!", "success");
+            }
+        };
+
+        // دالة رفض المستخدم
+        window.rejectUser = function () {
+            if (blockedEmail && blockedPassword) {
+                // تسجيل حالة الرفض في Local Storage
+                localStorage.setItem("userRejected", "true");
+
+                // إزالة بيانات المستخدم لمنع تسجيل الدخول نهائيًا
+                localStorage.removeItem("userBlocked");
+                localStorage.removeItem("blockedEmail");
+                localStorage.removeItem("blockedPassword");
+
+                // إظهار رسالة الرفض
+                showMessage("تم رفض طلب المستخدم ولن يتمكن من تسجيل الدخول.", "error");
+            }
+        };
+
+        // دالة إرسال طلب جديد
+        window.sendRequest = function () {
+            // إرسال طلب جديد حتى بعد الرفض أو الموافقة
+            if (blockedEmail && blockedPassword) {
+                showMessage("تم إرسال طلب إعادة التفعيل بنجاح!", "success");
+
+                // إعادة تعيين الحظر مؤقتًا بعد إرسال الطلب
+                localStorage.setItem("userBlocked", "true");
+                localStorage.setItem("blockedEmail", blockedEmail);
+                localStorage.setItem("blockedPassword", blockedPassword);
+
+                // إعادة تحديث البيانات (يمكنك تخصيص الإجراء هنا)
+                requestedEmail.textContent = blockedEmail;
+                requestedPassword.textContent = blockedPassword;
+            }
+        };
+
+        // دالة إعادة تعيين البيانات
+        window.resetData = function () {
+            // إزالة كافة البيانات المخزنة
+            localStorage.removeItem("userBlocked");
+            localStorage.removeItem("blockedEmail");
+            localStorage.removeItem("blockedPassword");
+            localStorage.removeItem("userApproved");
+            localStorage.removeItem("userRejected");
+
+            // إظهار رسالة إعادة التعيين
+            showMessage("تم إعادة تعيين البيانات بنجاح. يمكنك الآن إرسال طلبات جديدة.", "success");
+
+            // إعادة تحميل الصفحة أو إعادة تعيين المحتوى
+            setTimeout(() => {
+                location.reload(); // إعادة تحميل الصفحة
+            }, 3000);
+        };
+    });
+</script>
+
+</body>
+</html>

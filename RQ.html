@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #f8fac8;
+            font-family: Arial, sans-serif;
+        }
+
+        .ryte {
+            position: fixed;
+            background-color: #fcfce2;
+            width: 15%;
+            height: 100%;
+            right: 0;
+            top: 0;
+        }
+
+        .ap, .ae, .rq {
+            background-color: #9e9e9e;
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 90px;
+            right: 24%;
+        }
+        #ae {
+            position: absolute;
+            top: 20%;
+            right: 10%;
+        }
+        #ap {
+            position: absolute;
+            top: 24%;
+            right: 10%;
+        }
+        #rq {
+            position: absolute;
+            top: 22%;
+            right: 10%;
+        }
+
+        .ap {
+            top: 20%;
+        }
+
+        .ae {
+            top: 40%;
+        }
+
+        .rq {
+            top: 60%;
+        }
+        #zaed {
+            position: absolute;
+            height: 70%;
+            top: 15%;
+            right: 33%;
+        }
+        #zaed1 {
+            position: fixed;
+            position: absolute;
+            left: 6%;
+            top: 10%;
+            height: 80%;
+        }
+
+        .black {
+            background-color: #000000;
+            position: fixed;
+            width: 2%;
+            height: 100%;
+            right: 15%;
+            top: 0;
+            z-index: 2; /* وضعه أمام المحتوى */
+        }
+
+        .product-list-container {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 83%;
+    padding-left: 20px;
+    overflow-x: auto; /* يسمح بالتمرير الأفقي إذا كانت العناصر أكبر من العرض */
+    overflow-y: hidden;
+    white-space: nowrap; /* يمنع الانتقال إلى سطر جديد */
+}
+
+
+.product-container {
+    top: 45px;
+    right: 26px;
+    background-color: #ffffff;
+    width: 250px; /* العرض ثابت */
+    min-height: 500px; /* ارتفاع أدنى */
+    margin: 10px;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    overflow: hidden; /* تأكد من أن النصوص لا تخرج من النطاق */
+}
+
+.product-inner {
+    background-color: #faeaea;
+    width: 75%; /* عرض 3/4 من العرض */
+    height: 90%; /* نفس ارتفاع المستطيل الأبيض */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* محاذاة العناصر في الأعلى */
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto; /* السماح بالتمرير الرأسي إذا كان المحتوى طويلاً */
+    text-align: center; /* توسيط النص */
+    padding: 10px; /* إضافة حشو لتجنب تلاصق النصوص مع الحافة */
+    box-sizing: border-box; /* تأكد من أن الحشو والحدود يتم احتسابها في العرض والارتفاع */
+}
+
+.product-inner p {
+    overflow-wrap: break-word; /* التفاف النصوص الطويلة */
+    word-wrap: break-word; /* التفاف النصوص الطويلة */
+    white-space: normal; /* السماح بتقسيم النصوص إلى عدة أسطر */
+    margin: 5px 0; /* مسافة بين العناصر */
+}
+
+.product-container p {
+    white-space: normal; /* السماح بتقسيم النصوص إلى عدة أسطر */
+    overflow-wrap: break-word; /* التفاف النصوص الطويلة */
+    word-wrap: break-word; /* التفاف النصوص الطويلة */
+    margin: 5px; /* مسافة بين العناصر */
+}
+
+
+
+
+
+        .add-product-btn, .delete-all-btn {
+            border: none;
+            cursor: pointer;
+            background-color: #ffffff;
+            position: absolute;
+            width: 30%;
+            height: 8%;
+            bottom: 0;
+            right: 40%;
+        }
+        .add-product-btn{
+            background-color: #9e9e9e;
+        }
+
+        .delete-all-btn {
+            background-color: #250205;
+            color: white;
+            bottom: 0;
+            right: 70%;
+            width: 1.5%;
+            height: 8%;
+            padding: 5px;
+        }
+
+        .delete-product-btn {
+            z-index: 1;
+    background-color: #e63946;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    left: 15px; /* تغيير الموضع إلى اليسار */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+
+
+        .redent{
+            background-color: #ffffff;
+            position: absolute;
+            width: 30%;
+            height: 100%;
+        }
+
+        #searchInput {
+            z-index: 2;
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 360px;
+            height: 50px;
+            border-radius: 80px;
+            border: 0px solid #000000;
+            background-color: #d6d6d6;
+            position: absolute;
+            left: 40%;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        li {
+            margin: 10px 0; /* مسافة بين كل عنصر */
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd; /* خط فاصل */
+            width: 100%;
+            box-sizing: border-box; /* يجعل العناصر تأخذ بالحسبان حدودها في العرض */
+        }
+
+        li:last-child {
+            border-bottom: none; /* إزالة الخط الفاصل من آخر عنصر */
+        }
+
+        .no-results {
+            display: none;
+            color: #a3a3a3;
+            font-size: 14px;
+        }
+
+        .fa-magnifying-glass {
+            font-size: 30px;
+            background-color: #ffffff;
+            position: absolute;
+            left: 25%;
+            top: 25%;
+        }
+
+        .ss {
+            background-color: #ffffff;
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            left: 39.7%;
+            top: 1%;
+            border: 1px solid #a3a3a3;
+            z-index: 2;
+        }
+        .user-name-input {
+            font-size: 20px;
+            background-color: #f8f8f8;
+            border: none;
+            text-align: center;
+            width: 80%;
+            margin: auto;
+        }
+        
+
+        #wordList {
+            z-index: 3;
+            position: absolute;
+            left: 45%;
+            top: 11%;
+            background-color: #ffffff;
+            border: 1px solid #000000;
+            width: 20%;
+            max-height: 50%; /* يحدد أقصى ارتفاع للمستطيل */
+            overflow-y: auto; /* يجعل القائمة قابلة للتمرير إذا زادت الكلمات عن الحد */
+            display: none; /* مخفية بشكل افتراضي */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+
+
+
+
+
+        .confirmation-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* تظليل الخلفية */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* التأكد من أن الرسالة تظهر فوق كل شيء */
+}
+
+.confirmation-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.confirmation-button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.confirmation-button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+      <style>
+        .container {
+          --uib-size: 37px;
+          --uib-color: black;
+          --uib-speed: .9s;
+          --uib-bg-opacity: .1;
+          height: var(--uib-size);
+          width: var(--uib-size);
+          transform-origin: center;
+          overflow: visible;
+        }
+    
+        .car {
+          fill: none;
+          stroke: var(--uib-color);
+          stroke-dasharray: 15, 85;
+          stroke-dashoffset: 0;
+          stroke-linecap: round;
+          animation: travel var(--uib-speed) linear infinite;
+          will-change: stroke-dasharray, stroke-dashoffset;
+          transition: stroke 0.5s ease;
+        }
+    
+        .track {
+          stroke: var(--uib-color);
+          opacity: var(--uib-bg-opacity);
+          transition: stroke 0.5s ease;
+        }
+    
+        @keyframes travel {
+          0% {
+            stroke-dashoffset: 0;
+          }
+    
+          100% {
+            stroke-dashoffset: -100;
+          }
+        }
+    
+        #svg-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(255, 255, 255, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+      </style>
+</head>
+<body>
+    <div id="svg-overlay" hidden>
+        <svg 
+          class="container" 
+          x="0px" 
+          y="0px" 
+          viewBox="0 0 37 37" 
+          height="37" 
+          width="37" 
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <path 
+            class="track" 
+            fill="none" 
+            stroke-width="5" 
+            pathLength="100" 
+            d="M0.37 18.5 C0.37 5.772 5.772 0.37 18.5 0.37 S36.63 5.772 36.63 18.5 S31.228 36.63 18.5 36.63 S0.37 31.228 0.37 18.5">
+          </path>
+          <path 
+            class="car" 
+            fill="none" 
+            stroke-width="5" 
+            pathLength="100" 
+            d="M0.37 18.5 C0.37 5.772 5.772 0.37 18.5 0.37 S36.63 5.772 36.63 18.5 S31.228 36.63 18.5 36.63 S0.37 31.228 0.37 18.5">
+          </path>
+        </svg>
+      </div>
+    
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const overlay = document.getElementById('svg-overlay');
+          overlay.hidden = false;
+    
+          // إخفاء الرسوم المتحركة بعد 3 ثوانٍ
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 1000);
+        });
+      </script>
+    <div class="ryte">
+        <a href="AP.html">
+            <div class="ap">
+                <img id="ap" src="C:\Users\hussa\OneDrive\الصور\ap.jpeg" width="70px" alt="">
+            </div>
+        </a>
+        <a href="AE.html">
+            <div class="ae">
+                <img id="ae" src="C:\Users\hussa\OneDrive\الصور\ae.jpeg" width="70px" alt="">
+            </div>
+        </a>
+        <a href="RQ.html">
+            <div class="rq">
+                <img id="rq" src="C:\Users\hussa\OneDrive\الصور\rq.jpeg" width="70px" alt="">
+            </div>
+        </a>
+    </div>
+    <div class="black"></div>
+
+    <input dir="rtl" type="text" id="searchInput" placeholder="        أنقر هنا للبحث السريع">
+   <div class="ss"> <i class="fa fa-magnifying-glass"></i> </div>
+   <div class="boock">
+    <ul id="wordList">
+        <li class="no-results"><i class="fa fa-exclamation-circle"></i> لا توجد كلمات مطابقة</li>
+    </ul>
+    </div>
+
+    <div id="confirmationDialog" class="confirmation-dialog" style="display: none;">
+        <div class="confirmation-box">
+            <p>هل أنت متأكد من الحذف؟</p>
+            <button id="confirmYes" class="confirmation-button">نعم</button>
+            <button id="confirmNo" class="confirmation-button">لا</button>
+        </div>
+    </div>
+    
+
+    <div class="product-list-container">
+        <div id="productList"></div>
+    </div>
+
+    <div class="add-product-btn" onclick="addProduct()">
+        <div class="redent">
+            <img id="zaed" src="c:\Users\hussa\OneDrive\الصور\++.jpeg" alt="">
+        </div>
+        <img id="zaed1" src="c:\Users\hussa\OneDrive\الصور\h.jpeg" alt="">
+    </div>
+
+    <button class="delete-all-btn" onclick="deleteAllProducts()"></button>
+
+    <script>
+        window.onload = function() {
+            loadProducts(); // تحميل المنتجات المحفوظة
+            calculateTotalPrices(); // حساب مجموع الأسعار وعرضها
+            updateSearchList(); // تحديث قائمة البحث
+        };
+    
+        let deleteTarget = null; // متغير لتحديد الهدف الذي سيتم حذفه
+    
+        document.getElementById('confirmYes').onclick = function() {
+            if (deleteTarget) {
+                if (deleteTarget === 'all') {
+                    deleteAllProductsConfirmed();
+                } else {
+                    deleteTarget.remove();
+                    saveProducts();
+                    updateSearchList();
+                }
+                deleteTarget = null;
+            }
+            document.getElementById('confirmationDialog').style.display = 'none';
+        };
+    
+        document.getElementById('confirmNo').onclick = function() {
+            deleteTarget = null;
+            document.getElementById('confirmationDialog').style.display = 'none';
+        };
+    
+        function showConfirmation(target) {
+            deleteTarget = target;
+            document.getElementById('confirmationDialog').style.display = 'flex';
+        }
+    
+        function addProduct() {
+            const productList = document.getElementById('productList');
+            
+            const productContainer = document.createElement('div');
+            productContainer.classList.add('product-container');
+            
+            const productInner = document.createElement('div');
+            productInner.classList.add('product-inner');
+            
+            // إدخال اسم المستخدم عند الإضافة
+            const userName = prompt("أدخل اسم المستخدم:");
+            
+            // التأكد من أن الاسم ليس فارغًا
+            if (!userName) {
+                alert("يرجى إدخال اسم صحيح.");
+                return;
+            }
+    
+            // إدخال عدد المنتجات والأسعار
+            const numProducts = prompt("أدخل عدد المنتجات:");
+            if (!numProducts || isNaN(numProducts) || numProducts <= 0) {
+                alert("يرجى إدخال عدد صحيح للمنتجات.");
+                return;
+            }
+    
+            // إضافة اسم المستخدم
+            const userNameDisplay = document.createElement('p');
+            userNameDisplay.textContent = userName;
+            userNameDisplay.style.fontSize = '24px'; // تغيير حجم الخط هنا
+    
+            // إنشاء أزرار الحذف لكل منتج
+            const prices = [];
+            for (let i = 0; i < numProducts; i++) {
+                const productName = prompt(`أدخل اسم المنتج ${i + 1}:`);
+                const productPrice = parseFloat(prompt(`أدخل سعر المنتج ${i + 1}:`));
+    
+                if (productName && !isNaN(productPrice)) {
+                    const productElement = document.createElement('div');
+                    productElement.textContent = `${productName} - ${productPrice}`;
+                    productElement.style.margin = '5px 0';
+                    prices.push(productPrice);
+    
+                    productInner.appendChild(productElement);
+                }
+            }
+    
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-product-btn');
+            deleteButton.innerText = "حذف";
+            deleteButton.onclick = function() {
+                showConfirmation(productContainer);
+            };
+    
+            productContainer.appendChild(deleteButton);
+            productContainer.appendChild(userNameDisplay);
+            productContainer.appendChild(productInner);
+            productList.appendChild(productContainer);
+    
+            // إضافة الاسم الجديد إلى قائمة البحث
+            addToSearchList(userName);
+            
+            saveProducts();
+            updateSearchList();
+    
+            // حفظ الأسعار الجديدة في LocalStorage
+            savePrices(prices);
+            calculateTotalPrices(); // تحديث المجموع بعد إضافة منتجات جديدة
+        }
+    
+        function addToSearchList(userName) {
+            const wordList = document.getElementById('wordList');
+            const newItem = document.createElement('li');
+            newItem.textContent = userName;
+            newItem.onclick = function() {
+                highlightUser(userName);
+            };
+            wordList.insertBefore(newItem, wordList.querySelector('.no-results'));
+        }
+    
+        function updateSearchList() {
+            const wordList = document.getElementById('wordList');
+            wordList.innerHTML = ''; // مسح القائمة الحالية
+    
+            const productContainers = document.querySelectorAll('.product-container');
+            productContainers.forEach(container => {
+                const userName = container.querySelector('p').textContent;
+                addToSearchList(userName);
+            });
+    
+            // إعادة إضافة "لا توجد كلمات مطابقة"
+            const noResultsItem = document.createElement('li');
+            noResultsItem.classList.add('no-results');
+            noResultsItem.innerHTML = '<i class="fa fa-exclamation-circle"></i> لا توجد كلمات مطابقة';
+            wordList.appendChild(noResultsItem);
+        }
+    
+        function highlightUser(userName) {
+            const productContainers = document.querySelectorAll('.product-container');
+            let found = false;
+            
+            productContainers.forEach(container => {
+                const nameElement = container.querySelector('p');
+                if (nameElement.textContent === userName) {
+                    found = true;
+                    container.style.backgroundColor = '#ffff00'; // تمييز المستخدم باللون الأصفر
+                    container.scrollIntoView({ behavior: 'smooth', block: 'center' }); // الانتقال إلى المستخدم
+    
+                    setTimeout(() => {
+                        container.style.transition = 'background-color 2s';
+                        container.style.backgroundColor = '';
+                    }, 3000);
+                } else {
+                    container.style.backgroundColor = ''; // إزالة التمييز من الآخرين
+                }
+            });
+    
+            if (!found) {
+                alert("المستخدم غير موجود.");
+            }
+        }
+    
+        function saveProducts() {
+            const productList = document.getElementById('productList');
+            const products = [];
+            
+            productList.querySelectorAll('.product-container').forEach(container => {
+                const userName = container.querySelector('p').textContent;
+                const productInner = container.querySelector('.product-inner');
+                const productElements = productInner.children;
+                const productDetails = Array.from(productElements).map(productElement => productElement.textContent);
+                
+                products.push({ userName, productDetails });
+            });
+            
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+    
+        function loadProducts() {
+            const savedProducts = JSON.parse(localStorage.getItem('products'));
+            if (savedProducts) {
+                const productList = document.getElementById('productList');
+                savedProducts.forEach(data => {
+                    const productContainer = document.createElement('div');
+                    productContainer.classList.add('product-container');
+    
+                    const productInner = document.createElement('div');
+                    productInner.classList.add('product-inner');
+    
+                    const userNameDisplay = document.createElement('p');
+                    userNameDisplay.textContent = data.userName;
+                    userNameDisplay.style.position = 'absolute';
+                    userNameDisplay.style.top = '10px';
+                    userNameDisplay.style.right = '10px';
+                    userNameDisplay.style.fontSize = '24px';
+    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('delete-product-btn');
+                    deleteButton.innerText = "حذف";
+                    deleteButton.onclick = function() {
+                        showConfirmation(productContainer);
+                    };
+    
+                    data.productDetails.forEach(productText => {
+                        const product = document.createElement('p');
+                        product.textContent = productText;
+                        product.style.margin = '5px 0';
+                        productInner.appendChild(product);
+                    });
+    
+                    productContainer.appendChild(deleteButton);
+                    productContainer.appendChild(userNameDisplay);
+                    productContainer.appendChild(productInner);
+                    productList.appendChild(productContainer);
+                });
+            }
+        }
+    
+        function deleteAllProducts() {
+            showConfirmation('all');
+        }
+    
+        function deleteAllProductsConfirmed() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            saveProducts();
+            updateSearchList();
+        }
+    
+        const searchInput = document.getElementById('searchInput');
+        const wordList = document.getElementById('wordList');
+        const noResultsItem = document.querySelector('.no-results');
+    
+        searchInput.addEventListener('focus', function() {
+            wordList.style.display = 'flex'; // إظهار المستطيل عند التركيز على حقل البحث
+        });
+    
+        searchInput.addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const items = document.querySelectorAll('#wordList li:not(.no-results)');
+            
+            let anyVisible = false;
+            
+            items.forEach(function(item) {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = '';
+                    anyVisible = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+    
+            // عرض أو إخفاء رسالة "لا توجد كلمات مطابقة"
+            noResultsItem.style.display = anyVisible ? 'none' : 'block';
+        });
+    
+        // إخفاء القائمة إذا فقد الحقل التركيز (اختياري)
+        searchInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                wordList.style.display = 'none';
+            }, 200);
+        });
+    
+        function calculateTotalPrices() {
+            // استرجاع الأسعار من LocalStorage
+            const savedPrices = localStorage.getItem('productPrices');
+            if (savedPrices) {
+                const prices = JSON.parse(savedPrices);
+                const total = prices.reduce((acc, price) => acc + price, 0);
+    
+                // وضع المجموع في قسم المصاريف والأرباح
+                document.getElementById('expensesInput').value = total;
+                document.getElementById('profitInput').value = total;
+                
+                // حفظ القيمة الجديدة في LocalStorage
+                localStorage.setItem('pageSpecificData_expenses', total);
+                localStorage.setItem('pageSpecificData_profit', total);
+            }
+        }
+    
+        function savePrices(prices) {
+            const savedPrices = JSON.parse(localStorage.getItem('productPrices') || '[]');
+            const newPrices = [...savedPrices, ...prices];
+            localStorage.setItem('productPrices', JSON.stringify(newPrices));
+        }
+    </script>
+       
+</body>
+</html>

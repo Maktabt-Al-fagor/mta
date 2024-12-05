@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8fac8;
+            flex-direction: column;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-form">
+    <form id="loginForm">
+        <b>تسجيل الدخول</b><br><br>
+        <input type="text" id="username" placeholder="اسم المستخدم"><br><br>
+        <input type="password" id="password" placeholder="كلمة المرور"><br><br>
+        <input type="submit" value="دخول">
+        <input type="reset" value="إعادة تعيين">
+    </form>
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+    const users = {
+        "user1": "password1",
+        "user2": "password2",
+        "user3": "password3"
+    };
+
+    let attempts = {};
+    let disabledUntil = null;
+
+    const form = document.getElementById('loginForm');
+    const messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // إذا كان الحظر نشطًا
+        if (disabledUntil) {
+            const remainingTime = Math.ceil((disabledUntil - Date.now()) / 1000);
+            if (remainingTime > 0) {
+                messageDiv.textContent = `لا يمكنك المحاولة الآن. حاول بعد ${remainingTime} ثانية.`;
+                return;
+            } else {
+                disabledUntil = null;
+            }
+        }
+
+        // التحقق من صحة بيانات المستخدم
+        if (users[username] === password) {
+            messageDiv.textContent = "تم تسجيل الدخول بنجاح!";
+            messageDiv.style.color = "green";
+            return;
+        }
+
+        // إذا كانت المحاولة فاشلة
+        if (!attempts[username]) {
+            attempts[username] = 0;
+        }
+
+        attempts[username]++;
+        messageDiv.style.color = "red";
+
+        if (attempts[username] === 5) {
+            disabledUntil = Date.now() + 30000; // 30 ثانية
+            messageDiv.textContent = `لقد حاولت 5 مرات بشكل خاطئ. حاول مرة أخرى بعد 30 ثانية.`;
+        } else if (attempts[username] > 5 && attempts[username] <= 8) {
+            disabledUntil = Date.now() + 50000; // 50 ثانية
+            messageDiv.textContent = `لقد حاولت أكثر من 5 مرات بشكل خاطئ. حاول مرة أخرى بعد 50 ثانية.`;
+        } else if (attempts[username] > 8) {
+            // إرسال طلب التأكيد
+            messageDiv.textContent = `تم قفل الحساب. يرجى انتظار التأكيد.`;
+            sendConfirmation(username, password);
+        } else {
+            messageDiv.textContent = `بيانات غير صحيحة. حاول مرة أخرى (${attempts[username]} من 5 محاولات).`;
+        }
+    });
+
+    function sendConfirmation(username, password) {
+        // إعادة توجيه إلى صفحة التأكيد
+        window.location.href = `confirmation.html?username=${username}&password=${password}`;
+    }
+</script>
+
+</body>
+</html>

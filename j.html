@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض البيانات</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f5f5f5;
+            overflow: hidden;
+        }
+
+        #open-rectangle {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 50px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            line-height: 50px;
+            font-size: 18px;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+        }
+
+        #delete-all-rectangles {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-150px);
+            width: 200px;
+            height: 50px;
+            background-color: #dc3545;
+            color: #fff;
+            text-align: center;
+            line-height: 50px;
+            font-size: 18px;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+        }
+
+        #popup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 450px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: transform 0.4s ease;
+            z-index: 10;
+        }
+
+        #popup-container.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #popup-container label, #display-container h3 {
+            font-size: 16px;
+        }
+
+        #popup-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        #next-button, #back-button, #close-button, #finish-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #next-button {
+            background-color: #28a745;
+        }
+
+        #close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            line-height: 0;
+            padding: 0;
+        }
+
+        #product-list div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        #product-list div input {
+            width: 48%;
+        }
+
+        #display-container {
+            position: fixed;
+            top: 20px;
+            right: 10px;
+            width: 200px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        #display-container h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #007bff;
+        }
+
+        #display-container ul {
+            list-style-type: none;
+            padding: 0;
+            overflow-x: auto;
+        }
+
+        #display-container ul li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        #display-container ul li span {
+            font-size: 12px;
+        }
+
+        .edit-btn, .delete-btn {
+            background-color: #ffc107;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        #delete-all {
+            background-color: #28a745;
+            margin-top: 10px;
+        }
+
+        .user-container {
+            position: relative;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            width: 250px;
+            height: 300px; /* تحديد طول ثابت للمستطيل */
+            overflow-y: auto; /* تمكين التمرير الرأسي إذا كانت البيانات أكثر من المساحة المتاحة */
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .user-container h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+
+        .user-container ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .user-container ul li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .user-container ul li span {
+            font-size: 12px;
+        }
+
+        .user-container .edit-btn {
+            background-color: #ffc107;
+        }
+
+        .user-container .delete-btn {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div id="open-rectangle">افتح النموذج</div>
+    <div id="delete-all-rectangles">حذف جميع المستطيلات</div>
+
+    <!-- النموذج -->
+    <div id="popup-container">
+        <button id="close-button">×</button>
+
+        <div id="step-1">
+            <label for="username">اسم المستخدم:</label>
+            <input type="text" id="username" placeholder="أدخل اسم المستخدم">
+            
+            <label for="product-count">عدد المنتجات:</label>
+            <input type="number" id="product-count" placeholder="أدخل عدد المنتجات">
+
+            <button id="next-button">التالي</button>
+        </div>
+
+        <div id="step-2" class="hidden">
+            <div id="product-list"></div>
+
+            <div style="display: flex; justify-content: space-between;">
+                <button id="back-button">السابق</button>
+                <button id="finish-button">إتمام</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- عرض البيانات -->
+    <div id="user-container-list"></div>
+
+    <script>
+        const openRectangle = document.getElementById('open-rectangle');
+        const popupContainer = document.getElementById('popup-container');
+        const closeButton = document.getElementById('close-button');
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const nextButton = document.getElementById('next-button');
+        const backButton = document.getElementById('back-button');
+        const finishButton = document.getElementById('finish-button');
+        const productList = document.getElementById('product-list');
+        const userContainerList = document.getElementById('user-container-list');
+        const deleteAllRectangles = document.getElementById('delete-all-rectangles');
+
+        let productCount = 0;
+        let allData = []; // لتخزين جميع البيانات (أسماء المستخدمين والمنتجات)
+
+        openRectangle.addEventListener('click', () => {
+            popupContainer.classList.add('active');
+        });
+
+        closeButton.addEventListener('click', () => {
+            popupContainer.classList.remove('active');
+        });
+
+        nextButton.addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const countInput = document.getElementById('product-count').value;
+            productCount = parseInt(countInput);
+
+            if (!username || !productCount || productCount <= 0) {
+                alert('يرجى تعبئة جميع الحقول بشكل صحيح!');
+                return;
+            }
+
+            productList.innerHTML = '';
+            for (let i = 1; i <= productCount; i++) {
+                const productDiv = document.createElement('div');
+
+                const productName = document.createElement('input');
+                productName.type = 'text';
+                productName.placeholder = `اسم المنتج ${i}`;
+                productDiv.appendChild(productName);
+
+                const productPrice = document.createElement('input');
+                productPrice.type = 'number';
+                productPrice.placeholder = `سعر المنتج ${i}`;
+                productDiv.appendChild(productPrice);
+
+                productList.appendChild(productDiv);
+            }
+
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+        });
+
+        backButton.addEventListener('click', () => {
+            step1.classList.remove('hidden');
+            step2.classList.add('hidden');
+        });
+
+        finishButton.addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const products = [];
+
+            const productNames = document.querySelectorAll('#product-list input[type="text"]');
+            const productPrices = document.querySelectorAll('#product-list input[type="number"]');
+
+            for (let i = 0; i < productCount; i++) {
+                products.push({
+                    name: productNames[i].value,
+                    price: productPrices[i].value,
+                });
+            }
+
+            if (!username || products.some(product => !product.name || !product.price)) {
+                alert('يرجى تعبئة جميع الحقول بشكل صحيح!');
+                return;
+            }
+
+            const userContainer = document.createElement('div');
+            userContainer.classList.add('user-container');
+
+            const userHeader = document.createElement('h3');
+            userHeader.textContent = username;
+            userContainer.appendChild(userHeader);
+
+            const userList = document.createElement('ul');
+            products.forEach(product => {
+                const productItem = document.createElement('li');
+                productItem.innerHTML = `${product.name} <span>${product.price} ر.س</span> <button class="edit-btn">تعديل</button> <button class="delete-btn">حذف</button>`;
+                userList.appendChild(productItem);
+            });
+
+            userContainer.appendChild(userList);
+            userContainerList.appendChild(userContainer);
+
+            productNames.forEach(input => input.value = '');
+            productPrices.forEach(input => input.value = '');
+
+            step1.classList.remove('hidden');
+            step2.classList.add('hidden');
+            popupContainer.classList.remove('active');
+
+            allData.push({ username, products });
+        });
+
+        deleteAllRectangles.addEventListener('click', () => {
+            userContainerList.innerHTML = '';
+            allData = [];
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                e.target.closest('li').remove();
+            } else if (e.target.classList.contains('edit-btn')) {
+                const productNameInput = e.target.closest('li').querySelector('input');
+                productNameInput.disabled = false;
+                e.target.textContent = 'حفظ';
+            }
+        });
+    </script>
+</body>
+</html>

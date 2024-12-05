@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- تضمين مكتبة Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8fac8;
+            font-family: Arial, sans-serif;
+        }
+
+        .ryte {
+            position: fixed;
+            background-color: #fcfce2;
+            width: 15%;
+            height: 100%;
+            right: 0;
+            top: 0;
+        }
+
+        .ap, .ae, .rq {
+            background-color: #9e9e9e;
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 90px;
+            right: 24%;
+        }
+        #ae{
+            position: absolute;
+            top: 20%;
+            right: 10%;
+        }
+        #ap{
+            position: absolute;
+            top: 24%;
+            right: 10%;
+        }
+        #rq{
+            position: absolute;
+            top: 22%;
+            right: 10%;
+        }
+
+        .ap {
+            top: 20%;
+        }
+
+        .ae {
+            top: 40%;
+        }
+
+        .rq {
+            top: 60%;
+        }
+        #zaed{
+            position: absolute;
+            height: 70%;
+            top: 15%;
+            right: 35%;
+        }
+        #zaed1{
+            position: fixed;
+            position: absolute;
+            left: 8%;
+            top: 10%;
+            height: 80%;
+        }
+
+        .black {
+            background-color: #000000;
+            position: fixed;
+            width: 2%;
+            height: 100%;
+            right: 15%;
+            top: 0;
+        }
+
+        .mntag, .mntag1, .mntag2 {
+            background-color: #768580;
+            position: absolute;
+            width: 77%;
+            height: 23%;
+            right: 20%;
+        }
+
+        .mntag {
+            top: 10%;
+        }
+
+        .mntag1 {
+            top: 40%;
+        }
+
+        .mntag2 {
+            top: 70%;
+        }
+
+        .img1 {
+            position: absolute;
+            width: 15%;
+            height: 90%;
+            background-color: #fff;
+            top: 5%;
+            right: 1%;
+        }
+
+        .srs {
+            background-color: #777777;
+            position: absolute;
+            width: 100%;
+            height: 25%;
+            bottom: 0;
+        }
+
+        .redent {
+            background-color: #9e9e9e;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 40%;
+        }
+
+        .product-container {
+            background-color: #768580;
+            width: 79%;
+            right: 7.11%;
+            top: 10%;
+            height: 140px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .product-name {
+            width: 50%;
+            height: 50px;
+            border: none;
+            background-color: #76858000;
+            text-align: center;
+            font-size: 50px;
+            position: absolute;
+            left: 200px;
+        }
+
+        .product-inner {
+            background-color: #ffffff;
+            margin-right: 10px;
+            width: 14%;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .add-product-btn, .delete-all-btn {
+            border: none;
+            cursor: pointer;
+            background-color: #ffffff;
+            position: absolute;
+            width: 30%;
+            height: 8%;
+            bottom: 0;
+            right: 40%;
+        }
+
+        .delete-all-btn {
+            background-color: #250205;
+            position: fixed;
+            color: white;
+            bottom: 0;
+            right: 70%;
+            width: 1.5%;
+            height: 8%;
+            padding: 5px;
+        }
+
+        .delete-product-btn, .lock-product-btn {
+            background-color: #e63946;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .lock-product-btn {
+            background-color: #6c757d;
+            left: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+
+        #productList {
+            top: 30px;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 80vh;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .product-container {
+    transition: background-color 1s ease; /* تأثير تدريجي على لون الخلفية */
+}
+
+.product-container.highlighted {
+    background-color: yellow; /* لون الخلفية عند التحديد */
+}
+
+        .modal {
+    display: none; /* إخفاء النافذة افتراضيًا */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8); /* خلفية شبه شفافة */
+}
+
+.modal-content {
+    background-color: #333;
+    color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#confirmDelete {
+    background-color: #e63946;
+    color: white;
+}
+
+#cancelDelete {
+    background-color: #6c757d;
+    color: white;
+}
+
+
+
+
+#searchInput {
+            z-index: 2;
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 360px;
+            height: 50px;
+            border-radius: 80px;
+            border: 0px solid #000000;
+            background-color: #d6d6d6;
+            position: absolute;
+            left: 40%;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .no-results {
+            display: none;
+            color: #a3a3a3;
+            font-size: 14px;
+        }
+
+        .fa-magnifying-glass {
+            font-size: 30px;
+            background-color: #ffffff;
+            position: absolute;
+            left: 25%;
+            top: 25%;
+        }
+
+        .ss {
+            background-color: #ffffff;
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            left: 39.7%;
+            top: 1%;
+            border: 1px solid #a3a3a3;
+            z-index: 2;
+        }
+        
+
+        #wordList {
+            z-index: 3;
+            position: absolute;
+            left: 45%;
+            top: 11%;
+            background-color: #ffffff;
+            border: 1px solid #000000;
+            width: 20%;
+            max-height: 50%;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+    </style>
+      <style>
+        .container {
+          --uib-size: 37px;
+          --uib-color: black;
+          --uib-speed: .9s;
+          --uib-bg-opacity: .1;
+          height: var(--uib-size);
+          width: var(--uib-size);
+          transform-origin: center;
+          overflow: visible;
+        }
+    
+        .car {
+          fill: none;
+          stroke: var(--uib-color);
+          stroke-dasharray: 15, 85;
+          stroke-dashoffset: 0;
+          stroke-linecap: round;
+          animation: travel var(--uib-speed) linear infinite;
+          will-change: stroke-dasharray, stroke-dashoffset;
+          transition: stroke 0.5s ease;
+        }
+    
+        .track {
+          stroke: var(--uib-color);
+          opacity: var(--uib-bg-opacity);
+          transition: stroke 0.5s ease;
+        }
+    
+        @keyframes travel {
+          0% {
+            stroke-dashoffset: 0;
+          }
+    
+          100% {
+            stroke-dashoffset: -100;
+          }
+        }
+    
+        #svg-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(255, 255, 255, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+      </style>
+</head>
+<body>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap">
+    
+    <div id="svg-overlay" hidden>
+        <svg 
+          class="container" 
+          x="0px" 
+          y="0px" 
+          viewBox="0 0 37 37" 
+          height="37" 
+          width="37" 
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <path 
+            class="track" 
+            fill="none" 
+            stroke-width="5" 
+            pathLength="100" 
+            d="M0.37 18.5 C0.37 5.772 5.772 0.37 18.5 0.37 S36.63 5.772 36.63 18.5 S31.228 36.63 18.5 36.63 S0.37 31.228 0.37 18.5">
+          </path>
+          <path 
+            class="car" 
+            fill="none" 
+            stroke-width="5" 
+            pathLength="100" 
+            d="M0.37 18.5 C0.37 5.772 5.772 0.37 18.5 0.37 S36.63 5.772 36.63 18.5 S31.228 36.63 18.5 36.63 S0.37 31.228 0.37 18.5">
+          </path>
+        </svg>
+      </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const overlay = document.getElementById('svg-overlay');
+          overlay.hidden = false;
+    
+          // إخفاء الرسوم المتحركة بعد 3 ثوانٍ
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 1000);
+        });
+      </script>
+
+
+
+    <div class="ryte">
+        <a href="AP.html">
+            <div class="ap">
+                <img id="ap" src="C:\Users\hussa\OneDrive\الصور\ap.jpeg" width="70px" alt="">
+            </div>
+        </a>
+        <a href="AE.html">
+            <div class="ae">
+                <img id="ae" src="C:\Users\hussa\OneDrive\الصور\ae.jpeg" width="70px" alt="">
+            </div>
+        </a>
+        <a href="RQ.html">
+            <div class="rq">
+                <img id="rq" src="C:\Users\hussa\OneDrive\الصور\rq.jpeg" width="70px" alt="">
+            </div>
+        </a>
+    </div>
+    <div class="black"></div>
+
+
+    <input dir="rtl" type="text" id="searchInput" placeholder="        أنقر هنا للبحث السريع">
+    <div class="ss"> <i class="fa fa-magnifying-glass"></i> </div>
+    <div class="boock">
+     <ul id="wordList">
+         <li class="no-results"><i class="fa fa-exclamation-circle"></i> لا توجد كلمات مطابقة</li>
+     </ul>
+    </div>
+
+
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <p>هل أنت متأكد من الحذف؟</p>
+            <button id="confirmDelete">نعم</button>
+            <button id="cancelDelete">لا</button>
+        </div>
+    </div>
+    
+
+    <div id="productList"></div>
+
+    <div class="add-product-btn" onclick="addProduct()">
+        <div class="redent">
+            <img id="zaed" src="c:\Users\hussa\OneDrive\الصور\+.jpeg" alt="">
+        </div>
+        <img id="zaed1" src="c:\Users\hussa\OneDrive\الصور\WhatsApp Image 2024-08-14 at 5.49.01 AM.jpeg" alt="">
+    </div>
+    
+    <button class="delete-all-btn" onclick="deleteAllProducts()"></button>
+
+    <script>
+        window.onload = function() {
+            updateSearchList();
+            loadProducts();
+        };
+        
+        function addToSearchList(userName, container) {
+            const wordList = document.getElementById('wordList');
+            const newItem = document.createElement('li');
+            newItem.textContent = userName;
+            newItem.onclick = function() {
+                highlightProduct(container);
+                scrollToProduct(container); // Scroll to the product when selected
+            };
+            wordList.insertBefore(newItem, wordList.querySelector('.no-results'));
+        }
+        
+        function updateSearchList() {
+            const wordList = document.getElementById('wordList');
+            wordList.innerHTML = ''; // Clear current list
+        
+            const productContainers = document.querySelectorAll('.product-container');
+            productContainers.forEach(container => {
+                const productName = container.querySelector('.product-name').value;
+                addToSearchList(productName, container);
+            });
+        
+            const noResultsItem = document.createElement('li');
+            noResultsItem.classList.add('no-results');
+            noResultsItem.innerHTML = '<i class="fa fa-exclamation-circle"></i> لا توجد كلمات مطابقة';
+            wordList.appendChild(noResultsItem);
+        }
+        
+        function highlightProduct(container) {
+            // Reset previously highlighted product
+            const highlighted = document.querySelector('.highlighted');
+            if (highlighted) {
+                highlighted.classList.remove('highlighted');
+            }
+        
+            // Highlight the selected product
+            const productContainer = container; // Get the container of the product
+            productContainer.classList.add('highlighted');
+        
+            setTimeout(() => {
+                productContainer.classList.remove('highlighted'); // Remove highlight after delay
+            }, 3000); // Duration for keeping the highlight
+        }
+        
+        function scrollToProduct(container) {
+            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        const searchInput = document.getElementById('searchInput');
+        const wordList = document.getElementById('wordList');
+        const noResultsItem = document.querySelector('.no-results');
+        
+        searchInput.addEventListener('focus', function() {
+            wordList.style.display = 'flex';
+        });
+        
+        searchInput.addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const items = document.querySelectorAll('#wordList li:not(.no-results)');
+        
+            let anyVisible = false;
+        
+            items.forEach(function(item) {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = '';
+                    anyVisible = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        
+            noResultsItem.style.display = anyVisible ? 'none' : 'block';
+        });
+        
+        searchInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                wordList.style.display = 'none';
+            }, 200);
+        });
+        
+        // تعريف المتغير لحفظ الوظيفة الحالية للحذف
+        let currentDeleteFunction = null;
+        
+        // وظيفة لإظهار النافذة المنبثقة
+        function showConfirmationModal(deleteFunction) {
+            currentDeleteFunction = deleteFunction;
+            const modal = document.getElementById('confirmationModal');
+            modal.style.display = 'block';
+        }
+        
+        // وظيفة لإخفاء النافذة المنبثقة
+        function hideConfirmationModal() {
+            const modal = document.getElementById('confirmationModal');
+            modal.style.display = 'none';
+        }
+        
+        // تنفيذ وظيفة الحذف عند الضغط على "نعم"
+        document.getElementById('confirmDelete').onclick = function() {
+            if (currentDeleteFunction) {
+                currentDeleteFunction();
+            }
+            hideConfirmationModal();
+        };
+        
+        // إخفاء النافذة المنبثقة عند الضغط على "لا"
+        document.getElementById('cancelDelete').onclick = hideConfirmationModal;
+        
+        function addProduct() {
+            const productList = document.getElementById('productList');
+        
+            const productContainer = document.createElement('div');
+            productContainer.classList.add('product-container');
+        
+            const productInner = document.createElement('div');
+            productInner.classList.add('product-inner');
+            productInner.ondblclick = function() {
+                if (!productInner.classList.contains('locked')) {
+                    selectImage(productInner);
+                }
+            };
+        
+            const productName = document.createElement('input');
+            productName.classList.add('product-name');
+            productName.type = 'text';
+            productName.placeholder = 'اسم المنتج';
+            productName.disabled = true;
+        
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-product-btn');
+            deleteButton.innerText = "حذف";
+            deleteButton.onclick = function() {
+                showConfirmationModal(function() {
+                    productList.removeChild(productContainer);
+                    saveProducts();
+                    updateSearchList(); // Update the search list after deleting
+                });
+            };
+        
+            let isLocked = false;
+        
+            const lockButton = document.createElement('button');
+            lockButton.classList.add('lock-product-btn');
+            lockButton.innerHTML = '<i class="fas fa-lock-open"></i>';
+            lockButton.onclick = function() {
+                isLocked = !isLocked;
+                if (isLocked) {
+                    productInner.classList.add('locked');
+                    productName.disabled = true;
+                    deleteButton.disabled = true;
+                    lockButton.innerHTML = '<i class="fas fa-lock"></i>';
+                } else {
+                    productInner.classList.remove('locked');
+                    productName.disabled = false;
+                    deleteButton.disabled = false;
+                    lockButton.innerHTML = '<i class="fas fa-lock-open"></i>';
+                }
+                saveProducts();
+            };
+        
+            productContainer.appendChild(productName);
+            productContainer.appendChild(deleteButton);
+            productContainer.appendChild(lockButton);
+            productContainer.appendChild(productInner);
+            productList.appendChild(productContainer);
+        
+            saveProducts();
+            updateSearchList(); // Update the search list after adding
+        }
+        
+        function selectImage(container) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        container.style.backgroundImage = `url(${e.target.result})`;
+                        container.style.backgroundSize = 'cover';
+                        container.style.backgroundPosition = 'center';
+                        saveProducts();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+        
+        function saveProducts() {
+            const productList = document.getElementById('productList');
+            const products = [];
+        
+            productList.querySelectorAll('.product-container').forEach(container => {
+                const productInner = container.querySelector('.product-inner');
+                const productName = container.querySelector('.product-name');
+                const isLocked = productInner.classList.contains('locked');
+                const backgroundImage = productInner.style.backgroundImage;
+                products.push({
+                    name: productName.value,
+                    backgroundImage,
+                    isLocked
+                });
+            });
+        
+            localStorage.setItem('productsPageData', JSON.stringify(products));
+        }
+        
+        function loadProducts() {
+            const savedProducts = localStorage.getItem('productsPageData');
+            if (savedProducts) {
+                const products = JSON.parse(savedProducts);
+                const productList = document.getElementById('productList');
+        
+                products.forEach(product => {
+                    const productContainer = document.createElement('div');
+                    productContainer.classList.add('product-container');
+        
+                    const productInner = document.createElement('div');
+                    productInner.classList.add('product-inner');
+                    if (product.isLocked) {
+                        productInner.classList.add('locked');
+                    }
+                    productInner.style.backgroundImage = product.backgroundImage;
+                    productInner.style.backgroundSize = 'cover';
+                    productInner.style.backgroundPosition = 'center';
+                    productInner.ondblclick = function() {
+                        if (!productInner.classList.contains('locked')) {
+                            selectImage(productInner);
+                        }
+                    };
+        
+                    const productName = document.createElement('input');
+                    productName.classList.add('product-name');
+                    productName.type = 'text';
+                    productName.value = product.name;
+                    productName.disabled = product.isLocked;
+        
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('delete-product-btn');
+                    deleteButton.innerText = "حذف";
+                    deleteButton.onclick = function() {
+                        showConfirmationModal(function() {
+                            productList.removeChild(productContainer);
+                            saveProducts();
+                            updateSearchList(); // Update the search list after deleting
+                        });
+                    };
+        
+                    let isLocked = product.isLocked;
+        
+                    const lockButton = document.createElement('button');
+                    lockButton.classList.add('lock-product-btn');
+                    lockButton.innerHTML = isLocked ? '<i class="fas fa-lock"></i>' : '<i class="fas fa-lock-open"></i>';
+                    lockButton.onclick = function() {
+                        isLocked = !isLocked;
+                        if (isLocked) {
+                            productInner.classList.add('locked');
+                            productName.disabled = true;
+                            deleteButton.disabled = true;
+                            lockButton.innerHTML = '<i class="fas fa-lock"></i>';
+                        } else {
+                            productInner.classList.remove('locked');
+                            productName.disabled = false;
+                            deleteButton.disabled = false;
+                            lockButton.innerHTML = '<i class="fas fa-lock-open"></i>';
+                        }
+                        saveProducts();
+                    };
+        
+                    productContainer.appendChild(productName);
+                    productContainer.appendChild(deleteButton);
+                    productContainer.appendChild(lockButton);
+                    productContainer.appendChild(productInner);
+                    productList.appendChild(productContainer);
+                });
+            }
+        }
+        
+        function deleteAllProducts() {
+            showConfirmationModal(function() {
+                const productList = document.getElementById('productList');
+                productList.innerHTML = '';
+                saveProducts();
+                updateSearchList(); // Update the search list after deleting all products
+            });
+        }
+        </script>
+</body>
+</html>
